@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="tarjeta" style="max-width: 400px; margin: 50px auto;">
+    <h1 class="texto-centro mb-20" style="color: #2196F3;">GMS</h1>
+    
+    <div *ngIf="error" class="alerta alerta-error">{{ error }}</div>
+
+    <!-- Login Form -->
+    <div *ngIf="!registroMode">
+      <h2 class="texto-centro mb-20">Acceder</h2>
+      
+      <div class="form-grupo">
+        <label>Usuario</label>
+        <input 
+          type="text" 
+          [(ngModel)]="usuario" 
+          placeholder="Usuario"
+          (keyup.enter)="login()"
+        >
+      </div>
+
+      <div class="form-grupo">
+        <label>Contraseña</label>
+        <input 
+          type="password" 
+          [(ngModel)]="password" 
+          placeholder="Contraseña"
+          (keyup.enter)="login()"
+        >
+      </div>
+
+      <button 
+        class="btn-primario" 
+        style="width: 100%;" 
+        (click)="login()"
+        [disabled]="cargando"
+      >
+        {{ cargando ? 'Accediendo...' : 'Acceder' }}
+      </button>
+
+      <p class="texto-centro mt-20">
+        ¿No tienes cuenta? 
+        <a href="javascript:void(0)" (click)="toggleRegistro()" style="color: #2196F3; cursor: pointer;">
+          Registrate aquí
+        </a>
+      </p>
+    </div>
+
+    <!-- Register Form -->
+    <div *ngIf="registroMode">
+      <h2 class="texto-centro mb-20">Registro</h2>
+      
+      <div class="form-grupo">
+        <label>Usuario</label>
+        <input type="text" [(ngModel)]="registroForm.usuario" placeholder="Usuario">
+      </div>
+
+      <div class="form-grupo">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="registroForm.email" placeholder="tu@email.com">
+      </div>
+
+      <div class="form-grupo">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="registroForm.nombre" placeholder="Tu nombre">
+      </div>
+
+      <div class="form-grupo">
+        <label>Apellido</label>
+        <input type="text" [(ngModel)]="registroForm.apellido" placeholder="Tu apellido">
+      </div>
+
+      <div class="form-grupo">
+        <label>Contraseña</label>
+        <input type="password" [(ngModel)]="registroForm.password" placeholder="Contraseña">
+      </div>
+
+      <button 
+        class="btn-exito" 
+        style="width: 100%; margin-bottom: 10px;" 
+        (click)="registrarse()"
+        [disabled]="cargando"
+      >
+        {{ cargando ? 'Registrando...' : 'Registrarse' }}
+      </button>
+
+      <button 
+        class="btn-primario" 
+        style="width: 100%; background-color: #757575;" 
+        (click)="toggleRegistro()"
+      >
+        Volver a Login
+      </button>
+    </div>
+  </div>
+</div>

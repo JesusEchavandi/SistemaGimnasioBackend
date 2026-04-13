@@ -1,0 +1,90 @@
+<div class="contenedor">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1>💳 Gestión de Membresías</h1>
+    <button class="btn-primario" (click)="toggleFormulario()">
+      {{ mostrarFormulario ? '✕ Cerrar' : '➕ Nueva Membresía' }}
+    </button>
+  </div>
+
+  <div *ngIf="mensaje" class="alerta" [ngClass]="mensaje.includes('✅') ? 'alerta-exito' : 'alerta-error'">
+    {{ mensaje }}
+  </div>
+
+  <!-- Formulario Crear -->
+  <div *ngIf="mostrarFormulario" class="tarjeta">
+    <h2>Crear Nueva Membresía</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-grupo">
+        <label>Seleccionar Miembro</label>
+        <select [(ngModel)]="nuevaMembresia.miembroId">
+          <option [value]="0">-- Seleccionar --</option>
+          <option *ngFor="let miembro of miembros" [value]="miembro.id">
+            {{ miembro.nombre }} {{ miembro.apellido }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-grupo">
+        <label>Seleccionar Plan</label>
+        <select [(ngModel)]="nuevaMembresia.planId">
+          <option [value]="0">-- Seleccionar --</option>
+          <option *ngFor="let plan of planes" [value]="plan.id">
+            {{ plan.nombre }} - ${{ plan.precioMensual }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-exito" (click)="crearMembresia()" [disabled]="cargando">
+      {{ cargando ? 'Creando...' : '✓ Crear Membresía' }}
+    </button>
+  </div>
+
+  <!-- Tabla Membresías -->
+  <div class="tarjeta">
+    <h2>Listado de Membresías</h2>
+    
+    <div *ngIf="cargando && !mostrarFormulario" class="spinner"></div>
+
+    <div *ngIf="!cargando">
+      <table *ngIf="membresias.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Miembro</th>
+            <th>Plan</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let membresia of membresias">
+            <td>{{ membresia.id }}</td>
+            <td>{{ membresia.miembro?.nombre }} {{ membresia.miembro?.apellido }}</td>
+            <td>{{ membresia.plan?.nombre }}</td>
+            <td>{{ membresia.fechaInicio | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ membresia.fechaFin | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              <span class="badge" [ngClass]="membresia.activa ? 'badge-exito' : 'badge-error'">
+                {{ membresia.activa ? 'ACTIVA' : 'VENCIDA' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-exito" style="padding: 5px 10px; font-size: 12px;" 
+                (click)="renovarMembresia(membresia.id)">
+                Renovar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="membresias.length === 0" class="alerta alerta-info">
+        No hay membresías registradas.
+      </div>
+    </div>
+  </div>
+</div>

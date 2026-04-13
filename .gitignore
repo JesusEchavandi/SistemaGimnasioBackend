@@ -1,0 +1,41 @@
+# Maven
+target/
+.m2/
+*.jar
+.classpath
+.project
+.settings/
+*.class
+
+# Node
+node_modules/
+dist/
+.angular/
+.ng/
+.cache
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Logs (temporales)
+*.log
+*.txt
+
+# Environment
+.env
+.env.local
+
+# JavaScript
+package-lock.json
+yarn.lock
+
+# Dependencies
+.gradle/

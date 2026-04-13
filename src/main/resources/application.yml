@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: gms
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+jwt:
+  secreto: ${JWT_SECRETO:clave-super-segura-para-desarrollo-cambiar-en-produccion-12345678901234567890}
+  expiracion-minutos: 60
+  refresh-expiracion-dias: 7
+
+alertas:
+  vencimiento-dias: 7

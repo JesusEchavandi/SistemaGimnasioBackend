@@ -1,0 +1,886 @@
+{
+  "info": {
+    "name": "GMS - Sistema Gestión Gimnasio",
+    "description": "Colección completa de APIs para Sistema de Gestión de Gimnasio.\nBackend: Spring Boot 3.5.13 | Base de datos: MySQL 8.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "🔐 AUTENTICACIÓN",
+      "description": "Servicios de autenticación (registro, login, refresh token)",
+      "item": [
+        {
+          "name": "Registro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    let data = pm.response.json().data;",
+                  "    if (data.accessToken) {",
+                  "        pm.environment.set('access_token', data.accessToken);",
+                  "    }",
+                  "    if (data.refreshToken) {",
+                  "        pm.environment.set('refresh_token', data.refreshToken);",
+                  "    }",
+                  "    pm.test('Registro exitoso', function () {",
+                  "        pm.expect(pm.response.json().success).to.equal(true);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"usuario_nuevo\", \"email\": \"nuevo@ejemplo.com\", \"password\": \"Password@123\", \"nombre\": \"Juan\", \"apellido\": \"Pérez\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/registro",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "registro"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    let data = pm.response.json().data;",
+                  "    if (data.accessToken) {",
+                  "        pm.environment.set('access_token', data.accessToken);",
+                  "    }",
+                  "    if (data.refreshToken) {",
+                  "        pm.environment.set('refresh_token', data.refreshToken);",
+                  "    }",
+                  "    pm.test('Login exitoso', function () {",
+                  "        pm.expect(pm.response.json().success).to.equal(true);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refrescar Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"refreshToken\": \"{{refresh_token}}\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "refresh"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 PLANES",
+      "description": "Gestión de planes y precios",
+      "item": [
+        {
+          "name": "Listar Planes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Plan por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Plan Premium\", \"descripcion\": \"Acceso total a todas instalaciones\", \"precioMensual\": 99.99, \"duracionDias\": 30, \"activo\": true}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Plan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Plan Premium Actualizado\", \"descripcion\": \"Descripción actualizada\", \"precioMensual\": 119.99, \"duracionDias\": 30, \"activo\": true}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes", "1"]
+            }
+          }
+        },
+        {
+          "name": "Desactivar Plan",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes/1/desactivar",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes", "1", "desactivar"]
+            }
+          }
+        },
+        {
+          "name": "Activar Plan",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes/1/activar",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes", "1", "activar"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Plan",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/v1/planes/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "planes", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 MIEMBROS",
+      "description": "Gestión de miembros del gimnasio",
+      "item": [
+        {
+          "name": "Listar Miembros",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Miembro por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear Miembro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Carlos\", \"apellido\": \"García\", \"email\": \"carlos@ejemplo.com\", \"telefono\": \"987654321\", \"numeroMembresia\": \"MEM-001\", \"username\": \"carlos_g\", \"usuarioSistema\": 1}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Miembro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Carlos\", \"apellido\": \"García López\", \"email\": \"carlos.new@ejemplo.com\", \"telefono\": \"987654330\", \"numeroMembresia\": \"MEM-001\", \"username\": \"carlos_g\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros", "1"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Miembro por Usuario",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros/usuario/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros", "usuario", "1"]
+            }
+          }
+        },
+        {
+          "name": "Obtener por Número Membresía",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros/numero/MEM-001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros", "numero", "MEM-001"]
+            }
+          }
+        },
+        {
+          "name": "Listar Miembros Activos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros/activos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros", "activos"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Miembro",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/v1/miembros/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "miembros", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 MEMBRESÍAS",
+      "description": "Gestión de membresías activas e historial",
+      "item": [
+        {
+          "name": "Listar Membresías",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Membresía por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear Membresía",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"miembroId\": 1, \"planId\": 1, \"fechaInicio\": \"2024-01-15\", \"fechaFin\": \"2024-02-15\", \"estado\": \"ACTIVA\", \"precio\": 49.99}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias"]
+            }
+          }
+        },
+        {
+          "name": "Renovar Membresía",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"planId\": 1}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias/1/renovar",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias", "1", "renovar"]
+            }
+          }
+        },
+        {
+          "name": "Próximas a Vencer",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias/pendientes/proximas-a-vencer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias", "pendientes", "proximas-a-vencer"]
+            }
+          }
+        },
+        {
+          "name": "Membresías por Miembro",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias/miembro/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias", "miembro", "1"]
+            }
+          }
+        },
+        {
+          "name": "Cambiar Estado",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nuevoEstado\": \"SUSPENDIDA\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias/1/estado",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias", "1", "estado"]
+            }
+          }
+        },
+        {
+          "name": "Listar Activas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/membresias/activas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "membresias", "activas"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍🏫 INSTRUCTORES",
+      "description": "Gestión de instructores del gimnasio",
+      "item": [
+        {
+          "name": "Listar Instructores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/instructores",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "instructores"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Instructor por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/instructores/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "instructores", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear Instructor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Roberto\", \"apellido\": \"Martínez\", \"email\": \"roberto@ejemplo.com\", \"telefono\": \"987654321\", \"especialidad\": \"Musculación\", \"activo\": true}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/instructores",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "instructores"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Instructor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Roberto\", \"apellido\": \"Martínez García\", \"email\": \"roberto.new@ejemplo.com\", \"telefono\": \"987654330\", \"especialidad\": \"Entrenamiento Personalizado\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/instructores/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "instructores", "1"]
+            }
+          }
+        },
+        {
+          "name": "Desactivar Instructor",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/v1/instructores/1/desactivar",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "instructores", "1", "desactivar"]
+            }
+          }
+        },
+        {
+          "name": "Listar Instructores Activos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/instructores/activos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "instructores", "activos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏋️ CLASES",
+      "description": "Gestión de clases y horarios",
+      "item": [
+        {
+          "name": "Listar Clases",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Clase por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear Clase",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Zumba\", \"descripcion\": \"Clase de Zumba con ritmos latinos\", \"instructorId\": 1, \"fechaHora\": \"2024-01-20T18:00:00\", \"duracion\": 60, \"capacidadMaxima\": 20}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Clase",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Zumba Avanzada\", \"descripcion\": \"Clase de Zumba nivel avanzado\", \"instructorId\": 1, \"fechaHora\": \"2024-01-20T19:00:00\", \"duracion\": 60, \"capacidadMaxima\": 25}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases", "1"]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por Fechas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases/filtrar?fechaInicio=2024-01-01&fechaFin=2024-01-31",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases", "filtrar"],
+              "query": [
+                {
+                  "key": "fechaInicio",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "fechaFin",
+                  "value": "2024-01-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Por Instructor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases/instructor/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases", "instructor", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Clase",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/v1/clases/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clases", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 ASISTENCIAS",
+      "description": "Registro y control de asistencias",
+      "item": [
+        {
+          "name": "Registrar Asistencia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"miembroId\": 1, \"claseId\": 1, \"presente\": true}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/asistencias",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "asistencias"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Asistencia por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/asistencias/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "asistencias", "1"]
+            }
+          }
+        },
+        {
+          "name": "Filtrar Asistencias",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/asistencias/filtrar?miembroId=1&fechaInicio=2024-01-01",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "asistencias", "filtrar"],
+              "query": [
+                {
+                  "key": "miembroId",
+                  "value": "1"
+                },
+                {
+                  "key": "fechaInicio",
+                  "value": "2024-01-01"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tasa de Asistencia",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/asistencias/1/tasa",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "asistencias", "1", "tasa"]
+            }
+          }
+        },
+        {
+          "name": "Por Clase",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/asistencias/clase/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "asistencias", "clase", "1"]
+            }
+          }
+        },
+        {
+          "name": "Editar Asistencia",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"miembroId\": 1, \"claseId\": 1, \"presente\": false}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/asistencias/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "asistencias", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 REPORTES",
+      "description": "Reportes y análisis de datos",
+      "item": [
+        {
+          "name": "Membresías Activas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/membresias/activas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "membresias", "activas"]
+            }
+          }
+        },
+        {
+          "name": "Próximas a Vencer",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/membresias/proximas-a-vencer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "membresias", "proximas-a-vencer"]
+            }
+          }
+        },
+        {
+          "name": "Membresías Vencidas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/membresias/vencidas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "membresias", "vencidas"]
+            }
+          }
+        },
+        {
+          "name": "Por Estado",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/membresias/por-estado",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "membresias", "por-estado"]
+            }
+          }
+        },
+        {
+          "name": "Asistencias por Miembro",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/asistencias/por-miembro",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "asistencias", "por-miembro"]
+            }
+          }
+        },
+        {
+          "name": "Asistencias por Clase",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/asistencias/por-clase",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "asistencias", "por-clase"]
+            }
+          }
+        },
+        {
+          "name": "Tasa Promedio",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/asistencias/tasa-promedio",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "asistencias", "tasa-promedio"]
+            }
+          }
+        },
+        {
+          "name": "Ingresos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/reportes/membresias/ingresos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reportes", "membresias", "ingresos"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="seccion">
+    <div class="titulo-seccion">
+      <h2>Gestión de Instructores</h2>
+      <button class="btn-primario" (click)="abrirFormulario()" *ngIf="!mostrarFormulario">
+        + Nuevo Instructor
+      </button>
+    </div>
+
+    <div *ngIf="error" class="alerta alerta-error">{{ error }}</div>
+
+    <!-- Formulario -->
+    <div *ngIf="mostrarFormulario" class="formulario-contenedor">
+      <div class="formulario">
+        <h3>{{ editando ? 'Editar' : 'Nuevo' }} Instructor</h3>
+        
+        <div class="form-grupo">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="formData.nombre" placeholder="Nombre">
+        </div>
+
+        <div class="form-grupo">
+          <label>Apellido</label>
+          <input type="text" [(ngModel)]="formData.apellido" placeholder="Apellido">
+        </div>
+
+        <div class="form-grupo">
+          <label>Especialidad</label>
+          <input type="text" [(ngModel)]="formData.especialidad" placeholder="Especialidad (ej: Yoga, Pilates)">
+        </div>
+
+        <div class="form-grupo">
+          <label>Teléfono</label>
+          <input type="tel" [(ngModel)]="formData.telefono" placeholder="Teléfono">
+        </div>
+
+        <div class="form-grupo">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="formData.email" placeholder="Email">
+        </div>
+
+        <div class="form-grupo">
+          <button class="btn-primario" (click)="guardarInstructor()">Guardar</button>
+          <button class="btn-secundario" (click)="cerrarFormulario()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista -->
+    <div class="tabla-contenedor">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Especialidad</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let instructor of instructores">
+            <td>{{ instructor.nombre }}</td>
+            <td>{{ instructor.apellido }}</td>
+            <td>{{ instructor.especialidad }}</td>
+            <td>{{ instructor.telefono }}</td>
+            <td>{{ instructor.email }}</td>
+            <td>
+              <button class="btn-editar" (click)="editarInstructor(instructor)">Editar</button>
+              <button class="btn-eliminar" (click)="eliminarInstructor(instructor.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="instructores.length === 0" class="sin-datos">No hay instructores registrados</p>
+    </div>
+  </div>
+</div>

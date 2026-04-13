@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="seccion">
+    <div class="titulo-seccion">
+      <h2>Gestión de Clases</h2>
+      <button class="btn-primario" (click)="abrirFormulario()" *ngIf="!mostrarFormulario">
+        + Nueva Clase
+      </button>
+    </div>
+
+    <div *ngIf="error" class="alerta alerta-error">{{ error }}</div>
+
+    <!-- Formulario -->
+    <div *ngIf="mostrarFormulario" class="formulario-contenedor">
+      <div class="formulario">
+        <h3>{{ editando ? 'Editar' : 'Nueva' }} Clase</h3>
+        
+        <div class="form-grupo">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="formData.nombre" placeholder="Nombre de la clase">
+        </div>
+
+        <div class="form-grupo">
+          <label>Día de la Semana</label>
+          <select [(ngModel)]="formData.diaSemana">
+            <option value="">Selecciona un día</option>
+            <option value="LUNES">Lunes</option>
+            <option value="MARTES">Martes</option>
+            <option value="MIERCOLES">Miércoles</option>
+            <option value="JUEVES">Jueves</option>
+            <option value="VIERNES">Viernes</option>
+            <option value="SABADO">Sábado</option>
+            <option value="DOMINGO">Domingo</option>
+          </select>
+        </div>
+
+        <div class="form-grupo">
+          <label>Hora</label>
+          <input type="time" [(ngModel)]="formData.horaInicio">
+        </div>
+
+        <div class="form-grupo">
+          <label>Duración (minutos)</label>
+          <input type="number" [(ngModel)]="formData.duracionMinutos" placeholder="60">
+        </div>
+
+        <div class="form-grupo">
+          <button class="btn-primario" (click)="guardarClase()">Guardar</button>
+          <button class="btn-secundario" (click)="cerrarFormulario()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista -->
+    <div class="tabla-contenedor">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Día</th>
+            <th>Hora</th>
+            <th>Duración</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let clase of clases">
+            <td>{{ clase.nombre }}</td>
+            <td>{{ clase.diaSemana }}</td>
+            <td>{{ clase.horaInicio }}</td>
+            <td>{{ clase.duracionMinutos }} min</td>
+            <td>
+              <button class="btn-editar" (click)="editarClase(clase)">Editar</button>
+              <button class="btn-eliminar" (click)="eliminarClase(clase.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="clases.length === 0" class="sin-datos">No hay clases registradas</p>
+    </div>
+  </div>
+</div>

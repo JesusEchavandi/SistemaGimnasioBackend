@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="seccion">
+    <h2>Reportes</h2>
+    
+    <div class="botones-reporte">
+      <button [class.activo]="tipoReporte === 'asistencias'" (click)="cambiarTipoReporte('asistencias')">
+        Reportes de Asistencias
+      </button>
+      <button [class.activo]="tipoReporte === 'membresias'" (click)="cambiarTipoReporte('membresias')">
+        Reportes de Membresias
+      </button>
+    </div>
+
+    <div class="acciones-reporte">
+      <button class="btn-exportar" (click)="exportarPDF()">📥 Exportar PDF</button>
+      <button class="btn-exportar" (click)="exportarExcel()">📊 Exportar Excel</button>
+    </div>
+
+    <div class="tabla-contenedor">
+      <table class="tabla" *ngIf="reportes.length > 0">
+        <thead>
+          <tr>
+            <th *ngFor="let columna of (reportes[0] | keyvalue)">{{ columna.key }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fila of reportes">
+            <td *ngFor="let columna of (fila | keyvalue)">{{ columna.value }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="reportes.length === 0" class="sin-datos">No hay datos para mostrar</p>
+    </div>
+  </div>
+</div>

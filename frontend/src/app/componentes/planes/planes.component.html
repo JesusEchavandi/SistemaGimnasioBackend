@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="seccion">
+    <div class="titulo-seccion">
+      <h2>Gestión de Planes</h2>
+      <button class="btn-primario" (click)="abrirFormulario()" *ngIf="!mostrarFormulario">
+        + Nuevo Plan
+      </button>
+    </div>
+
+    <div *ngIf="error" class="alerta alerta-error">{{ error }}</div>
+
+    <!-- Formulario -->
+    <div *ngIf="mostrarFormulario" class="formulario-contenedor">
+      <div class="formulario">
+        <h3>{{ editando ? 'Editar' : 'Nuevo' }} Plan</h3>
+        
+        <div class="form-grupo">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="formData.nombre" placeholder="Nombre del plan">
+        </div>
+
+        <div class="form-grupo">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="formData.descripcion" placeholder="Descripción"></textarea>
+        </div>
+
+        <div class="form-grupo">
+          <label>Precio ($)</label>
+          <input type="number" [(ngModel)]="formData.precioMensual" placeholder="0.00">
+        </div>
+
+        <div class="form-grupo">
+          <label>Duración (días)</label>
+          <input type="number" [(ngModel)]="formData.duracionDias" placeholder="30">
+        </div>
+
+        <div class="form-grupo">
+          <button class="btn-primario" (click)="guardarPlan()">Guardar</button>
+          <button class="btn-secundario" (click)="cerrarFormulario()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista -->
+    <div class="tabla-contenedor">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Duración (días)</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let plan of planes">
+            <td>{{ plan.nombre }}</td>
+            <td>{{ plan.descripcion }}</td>
+            <td>${{ plan.precioMensual }}</td>
+            <td>{{ plan.duracionDias }} días</td>
+            <td>
+              <button class="btn-editar" (click)="editarPlan(plan)">Editar</button>
+              <button class="btn-eliminar" (click)="eliminarPlan(plan.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="planes.length === 0" class="sin-datos">No hay planes registrados</p>
+    </div>
+  </div>
+</div>

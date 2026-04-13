@@ -1,0 +1,15 @@
+{tsconfig.app.json
+
+
+
+
+
+
+
+
+
+
+
+
+
+}  ]    "src/**/*.d.ts"    "src/**/*.spec.ts",  "include": [  },    ]      "jasmine"    "types": [    "outDir": "./out-tsc/spec",  "compilerOptions": {  "extends": "./tsconfig.json",tsconfig.spec.json

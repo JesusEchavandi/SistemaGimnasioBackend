@@ -1,0 +1,87 @@
+<div class="contenedor">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1>👥 Gestión de Miembros</h1>
+    <button class="btn-primario" (click)="toggleFormulario()">
+      {{ mostrarFormulario ? '✕ Cerrar' : '➕ Nuevo Miembro' }}
+    </button>
+  </div>
+
+  <div *ngIf="mensaje" class="alerta" [ngClass]="mensaje.includes('✅') ? 'alerta-exito' : 'alerta-error'">
+    {{ mensaje }}
+  </div>
+
+  <!-- Formulario Crear -->
+  <div *ngIf="mostrarFormulario" class="tarjeta">
+    <h2>Crear Nuevo Miembro</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-grupo">
+        <label>Número Membresía</label>
+        <input type="text" [(ngModel)]="nuevoMiembro.numeroMembresia" placeholder="M001">
+      </div>
+
+      <div class="form-grupo">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="nuevoMiembro.nombre" placeholder="Juan">
+      </div>
+
+      <div class="form-grupo">
+        <label>Apellido</label>
+        <input type="text" [(ngModel)]="nuevoMiembro.apellido" placeholder="Pérez">
+      </div>
+
+      <div class="form-grupo">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="nuevoMiembro.email" placeholder="juan@example.com">
+      </div>
+
+      <div class="form-grupo">
+        <label>Teléfono</label>
+        <input type="text" [(ngModel)]="nuevoMiembro.telefono" placeholder="3001234567">
+      </div>
+    </div>
+
+    <button class="btn-exito" (click)="crearMiembro()" [disabled]="cargando">
+      {{ cargando ? 'Creando...' : '✓ Crear Miembro' }}
+    </button>
+  </div>
+
+  <!-- Tabla Miembros -->
+  <div class="tarjeta">
+    <h2>Listado de Miembros</h2>
+    
+    <div *ngIf="cargando && !mostrarFormulario" class="spinner"></div>
+
+    <div *ngIf="!cargando">
+      <table *ngIf="miembros.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Número Membresía</th>
+            <th>Nombre Completo</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let miembro of miembros">
+            <td>{{ miembro.id }}</td>
+            <td>{{ miembro.numeroMembresia }}</td>
+            <td>{{ miembro.nombre }} {{ miembro.apellido }}</td>
+            <td>{{ miembro.email }}</td>
+            <td>{{ miembro.telefono }}</td>
+            <td>
+              <button class="btn-primario" style="padding: 5px 10px; font-size: 12px;">Editar</button>
+              <button class="btn-peligro" style="padding: 5px 10px; font-size: 12px;">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="miembros.length === 0" class="alerta alerta-info">
+        No hay miembros registrados. ¡Crea uno nuevo!
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="dashboard">
+  <header class="encabezado">
+    <div class="logo">GMS</div>
+    <div class="usuario-info">
+      <span>Bienvenido, {{ usuarioActual?.nombre }}</span>
+      <button class="btn-peligro" (click)="cerrarSesion()">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <nav class="menu-lateral">
+    <ul>
+      <li><a routerLink="/dashboard" routerLinkActive="activo">📊 Dashboard</a></li>
+      <li><a routerLink="/miembros" routerLinkActive="activo">👥 Miembros</a></li>
+      <li><a routerLink="/membresias" routerLinkActive="activo">💳 Membresías</a></li>
+      <li><a routerLink="/planes" routerLinkActive="activo">📋 Planes</a></li>
+      <li><a routerLink="/instructores" routerLinkActive="activo">👨‍🏫 Instructores</a></li>
+      <li><a routerLink="/clases" routerLinkActive="activo">📚 Clases</a></li>
+      <li><a routerLink="/reportes" routerLinkActive="activo">📊 Reportes</a></li>
+    </ul>
+  </nav>
+
+  <main class="contenido-principal">
+    <div class="contenedor">
+      <h1>Dashboard</h1>
+      
+      <div *ngIf="cargando" class="spinner"></div>
+      
+      <div *ngIf="!cargando" class="grid-estadisticas">
+        <div class="tarjeta-estadistica">
+          <div class="numero">{{ estadisticas.totalMiembros }}</div>
+          <div class="titulo">Total Miembros</div>
+          <div class="icono">👥</div>
+        </div>
+
+        <div class="tarjeta-estadistica">
+          <div class="numero">{{ estadisticas.proximasVencer }}</div>
+          <div class="titulo">Membresías Próximas a Vencer</div>
+          <div class="icono">⏰</div>
+        </div>
+
+        <div class="tarjeta-estadistica">
+          <div class="numero">{{ estadisticas.instructores }}</div>
+          <div class="titulo">Instructores</div>
+          <div class="icono">👨‍🏫</div>
+        </div>
+
+        <div class="tarjeta-estadistica">
+          <div class="numero">{{ estadisticas.clasesSemanales }}</div>
+          <div class="titulo">Clases Semana</div>
+          <div class="icono">📚</div>
+        </div>
+      </div>
+
+      <div class="acceso-rapido">
+        <h2>Acceso Rápido</h2>
+        <div class="botones-rapidos">
+          <button class="btn-primario" routerLink="/miembros">➕ Nuevo Miembro</button>
+          <button class="btn-secundario" routerLink="/membresias">➕ Nueva Membresía</button>
+          <button class="btn-exito" routerLink="/reportes">📊 Ver Reportes</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

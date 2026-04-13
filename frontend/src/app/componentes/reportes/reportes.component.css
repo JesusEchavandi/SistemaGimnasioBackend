@@ -1,0 +1,92 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.seccion {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.seccion h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.botones-reporte {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.botones-reporte button {
+  padding: 10px 20px;
+  border: 2px solid #ddd;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.botones-reporte button.activo {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+
+.acciones-reporte {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-exportar {
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-exportar:hover {
+  background: #45a049;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabla thead {
+  background: #f5f5f5;
+}
+
+.tabla th, .tabla td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla th {
+  font-weight: bold;
+  color: #333;
+}
+
+.tabla tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.sin-datos {
+  text-align: center;
+  color: #999;
+  padding: 40px;
+}
